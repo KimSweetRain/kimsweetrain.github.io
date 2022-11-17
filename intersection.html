@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>intersection observer</title>
+    <style>
+        * {box-sizing: border-box;}
+        .container {
+            width: 600px;
+            height: 800px;
+            margin: 200px;
+            overflow: scroll;
+            background-color: deepskyblue;
+        }
+        .box {
+            width: 300px;
+            height: 300px;
+            margin: 80px auto;
+            background-color: beige;
+            transition: 350ms;
+        }
+        .box.active {
+            background-color: gold;
+        }
+    </style>
+</head>
+<body>
+    <h2>intersection observer</h2>
+    <div class="container">
+        <div class="box">1</div>
+        <div class="box">2</div>
+        <div class="box">3</div>
+        <div class="box">4</div>
+        <div class="box">5</div>
+        <div class="box">6</div>
+        <div class="box">7</div>
+        <div class="box">8</div>
+        <div class="box">9</div>
+        <div class="box">10</div>
+        <div class="box">11</div>
+        <div class="box">12</div>
+        <div class="box">13</div>
+        <div class="box">14</div>
+        <div class="box">15</div>
+        <div class="box">16</div>
+        <div class="box">17</div>
+        <div class="box">18</div>
+        <div class="box">19</div>
+        <div class="box">20</div>
+    </div>
+    <script>
+        const boxes = document.querySelectorAll('.box');
+
+        const options = {
+            root: null, // null은 기본값, viewport(박스사이즈 기준이 아닌 윈도우 창) 기준 OR getElement~로 엘리먼트를 가져와서 null 대신에 집어넣어도 됨
+            rootMargin: '100px', // 컨테이너를 기준으로 감지할 마진을 설정
+            threshold: 0.2 // 1로 넣으면 완벽하게 뷰포트에 보여야 변화됨 / 엔트리가 어느정도 화면에 노출돼야 감지할 것인지 설정(0 ~ 1)
+        }
+        
+        const callback = (entries, observer) => {
+            entries.forEach(entry => {
+                if(entry.isIntersecting){ // entry가 보이게 됐다면
+                    entry.target.classList.add('active');
+                } else { // entry가 안보이게 됐다면
+                    entry.target.classList.remove('active');
+                }
+            });
+        }
+        const observer = new IntersectionObserver(callback, options);
+        boxes.forEach(box => observer.observe(box));
+    </script>
+</body>
+</html>
